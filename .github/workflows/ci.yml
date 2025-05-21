@@ -1,0 +1,36 @@
+name: CI DevSecOps
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el código
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependencias
+      run: |
+        pip install -r app/requirements.txt
+
+    - name: Escaneo de dependencias con Safety
+      run: |
+        pip install safety
+        safety check -r app/requirements.txt || true
+
+    - name: Escaneo de seguridad con Bandit
+      run: |
+        pip install bandit
+        bandit -r app/
+
+    - name: Construir imagen Docker
+      run: |
+        docker build -t devsecops-app ./app
