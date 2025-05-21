@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return "Hola desde DevSecOps en Azure Prueba de escaneos"
+    return "Hola desde DevSecOps en Azure. Resultados del pipeline"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
